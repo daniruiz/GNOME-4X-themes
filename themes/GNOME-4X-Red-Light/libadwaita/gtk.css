@@ -23,7 +23,7 @@ headerbar.default-decoration { min-height: 38px; }
 headerbar.default-decoration > windowhandle { background-position: 0 -11px; }
 
 /* GTK NAMED COLORS ---------------- use responsibly! */
-@define-color accent_bg_color #2777ff;
+@define-color accent_bg_color #ec0101;
 @define-color accent_fg_color #ffffff;
 @define-color accent_color @accent_bg_color;
 @define-color destructive_bg_color @red_3;

@@ -43,7 +43,7 @@
 @define-color dark_3 #3d3846;
 @define-color dark_4 #241f31;
 @define-color dark_5 #000000;
-@define-color accent_bg_color #2777ff;
+@define-color accent_bg_color #737680;
 @define-color accent_fg_color #ffffff;
 @define-color accent_color @accent_bg_color;
 @define-color destructive_bg_color @red_3;
