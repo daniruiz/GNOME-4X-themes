@@ -25,8 +25,12 @@ $(COLOR_VARIANTS):
 	cp -r src/assets themes/GNOME-4X-$@-Light/libadwaita/assets/
 	
 	cp src/install.sh themes/GNOME-4X-$@-Dark
+	cp src/uninstall.sh themes/GNOME-4X-$@-Dark
 	chmod +x themes/GNOME-4X-$@-Dark/install.sh
+	chmod +x themes/GNOME-4X-$@-Dark/uninstall.sh
 	cp src/install.sh themes/GNOME-4X-$@-Light
+	cp src/uninstall.sh themes/GNOME-4X-$@-Light
 	chmod +x themes/GNOME-4X-$@-Light/install.sh
+	chmod +x themes/GNOME-4X-$@-Light/uninstall.sh
 
 .PHONY: build $(COLOR_VARIANTS)
