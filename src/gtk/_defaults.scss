@@ -1,8 +1,8 @@
 $_dark_base_color: #272a34;
 
 // The main accent color and the matching text value
-@define-color accent_bg_color #2777ff;
-@define-color accent_fg_color white;
+@define-color accent_bg_color #{BG_COLOR};
+@define-color accent_fg_color #{FG_COLOR};
 @define-color accent_color @accent_bg_color;
 
 // destructive-action buttons
