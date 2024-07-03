@@ -1,7 +1,7 @@
 #!/bin/sh
 
 mkdir -p ~/.config/gtk-4.0/
-cp -f libadwaita/* ~/.config/gtk-4.0/
+cp -r -f libadwaita/* ~/.config/gtk-4.0/
 
 mkdir -p ~/.themes/GNOME-4X
 cp -a gtk-3.0 ~/.themes/GNOME-4X/
