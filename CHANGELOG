@@ -1,0 +1,25 @@
+[20240705]
+ * Add gtk-3 themes scss code
+ * Add makefile
+ * Add first generated Blue themes
+ * makefile generate all theme variants
+ * Generate all theme variants
+ * Ignore build folder
+ * Add makefile.inc
+ * Create installation script
+ * Copy assets and installation scripts during themes build
+ * Regenerate all themes
+ * Add assets inside src
+ * Fix install error
+ * Add uninstall script
+ * Move gtk3 source files
+ * Adapt makefile for moved files
+ * Add gtk-4 themes
+ * Install gtk-4 themes
+ * Fix dark theme file name
+ * Regenerate all themes
+ * Add license
+ * Add README and screenshots
+ * Remove unwanted theme variants
+ * Add makefile tasks for releases
+
