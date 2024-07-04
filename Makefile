@@ -43,5 +43,7 @@ $(COLOR_VARIANTS):
 	cp src/uninstall.sh themes/GNOME-4X-$@-Light
 	chmod +x themes/GNOME-4X-$@-Light/install.sh
 	chmod +x themes/GNOME-4X-$@-Light/uninstall.sh
+	
+	rm -rf $(foreach variant,$(UNWANTED_VARIANTS),themes/GNOME-4X-$(variant)*)
 
 .PHONY: build $(COLOR_VARIANTS)
