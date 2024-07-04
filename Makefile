@@ -46,4 +46,38 @@ $(COLOR_VARIANTS):
 	
 	rm -rf $(foreach variant,$(UNWANTED_VARIANTS),themes/GNOME-4X-$(variant)*)
 
-.PHONY: build $(COLOR_VARIANTS)
+_get_version:
+	$(eval VERSION ?= $(shell git show -s --format=%cd --date=format:%Y%m%d HEAD))
+	@echo $(VERSION)
+
+_get_tag:
+	$(eval TAG := $(shell git describe --abbrev=0 --tags))
+	@echo $(TAG)
+
+dist: _get_version
+	count=1; \
+	cd themes; \
+	for theme in *; do \
+		count_pretty=$$(echo "0$${count}" | tail -c 3); \
+		(cd "$${theme}" && tar -cjf ../../"$${count_pretty}-$${theme}.tar.xz" *); \
+		count=$$((count+1)); \
+	done
+
+release: _get_version
+	$(MAKE) generate_changelog VERSION=$(VERSION)
+	git tag -f $(VERSION)
+	git push origin --tags
+	$(MAKE) dist
+
+generate_changelog: _get_version _get_tag
+	git checkout $(TAG) CHANGELOG
+	mv CHANGELOG CHANGELOG.old
+	echo [$(VERSION)] > CHANGELOG
+	printf "%s\n\n" "$$(git log --pretty=format:' * %s' $(TAG)..HEAD)" >> CHANGELOG
+	cat CHANGELOG.old >> CHANGELOG
+	rm CHANGELOG.old
+	$$EDITOR CHANGELOG
+	git commit CHANGELOG -m "Update CHANGELOG version $(VERSION)"
+	git push origin HEAD
+
+.PHONY: build $(COLOR_VARIANTS) _get_version _get_tag dist release generate_changelog
