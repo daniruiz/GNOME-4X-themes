@@ -17,7 +17,7 @@ $(COLOR_VARIANTS):
 	ln -rsf themes/GNOME-4X-$@-Dark/gtk-3.0/gtk.css themes/GNOME-4X-$@-Dark/gtk-3.0/gtk-dark.css
 	mkdir -p themes/GNOME-4X-$@-Light/gtk-3.0/
 	$(SCSS) build/$@/gtk-3/gtk.scss > themes/GNOME-4X-$@-Light/gtk-3.0/gtk.css
-	cp themes/GNOME-4X-$@-Dark/gtk-3.0/gtk.css themes/GNOME-4X-$@-Light/gtk-3.0/gtk-light.css
+	cp themes/GNOME-4X-$@-Dark/gtk-3.0/gtk.css themes/GNOME-4X-$@-Light/gtk-3.0/gtk-dark.css
 	
 	mkdir -p themes/GNOME-4X-$@-Dark/gtk-4.0/
 	$(SCSS) src/gtk-4/base.scss > themes/GNOME-4X-$@-Dark/gtk-4.0/gtk.css
