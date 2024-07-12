@@ -1,3 +1,8 @@
+[20240712]
+ * Revert to previous theme during uninstall
+ * Copy uninstall script during installation
+ * Generate all theme variants
+
 [20240705]
  * Add gtk-3 themes scss code
  * Add makefile
