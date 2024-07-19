@@ -1,3 +1,6 @@
+[20240718]
+ * Add script to generate any color theme
+
 [20240712]
  * Revert to previous theme during uninstall
  * Copy uninstall script during installation
