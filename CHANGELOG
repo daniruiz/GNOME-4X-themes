@@ -1,3 +1,10 @@
+[20240730]
+ * Properly save previous theme in uninstall.sh
+ * Remove uninstall.sh too during theme files removal
+ * Update all themes
+ * Update libadwaita code to 1.5.2
+ * Regenerate all themes
+
 [20240718]
  * Add script to generate any color theme
 
