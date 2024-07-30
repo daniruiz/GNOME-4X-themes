@@ -379,7 +379,9 @@ tabbutton label { font-weight: 800; font-size: 8pt; }
 
 tabbutton label.small { font-size: 6pt; }
 
-tabbutton indicatorbin > indicator, tabbutton indicatorbin > mask { transform: translate(-1px, 1px); }
+tabbutton indicatorbin > indicator:dir(ltr), tabbutton indicatorbin > mask:dir(ltr) { transform: translate(-1px, 1px); }
+
+tabbutton indicatorbin > indicator:dir(rtl), tabbutton indicatorbin > mask:dir(rtl) { transform: translate(1px, 1px); }
 
 calendar { color: @view_fg_color; background-clip: padding-box; border: 1px solid alpha(currentColor,0.15); font-feature-settings: "tnum"; }
 
@@ -796,6 +798,8 @@ spinbutton.password image.caps-lock-indicator, entry.password image.caps-lock-in
 spinbutton:drop(active), entry:drop(active):focus-within, entry:drop(active) { border-color: @accent_bg_color; box-shadow: inset 0 0 0 1px @accent_bg_color; }
 
 spinbutton > progress, entry > progress { margin-bottom: 3px; }
+
+spinbutton > progress > trough, entry > progress > trough { min-height: 2px; }
 
 spinbutton > progress > trough > progress, entry > progress > trough > progress { background-color: transparent; background-image: none; border-radius: 0; border-width: 0 0 2px; border-color: @accent_bg_color; border-style: solid; box-shadow: none; }
 
