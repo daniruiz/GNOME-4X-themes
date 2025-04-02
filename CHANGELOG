@@ -1,3 +1,10 @@
+[20250402]
+ * Update libadwaita colors
+ * Update gtk-3 theme based on adw-gtk3
+ * Update libadwaita code for base gtk-4 theme
+ * Improve install script
+ * Regenerate all themes
+
 [20240730]
  * Properly save previous theme in uninstall.sh
  * Remove uninstall.sh too during theme files removal
