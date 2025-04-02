@@ -1,45 +1,134 @@
-
 bottom-sheet {
   > dimming {
-    background-color: gtkalpha($shade_color, 2);
+    background-color: RGB(from var(--shade-color) r g b / calc(alpha * 2));
   }
 
   > sheet {
-    border-top-left-radius: $window_radius;
-    border-top-right-radius: $window_radius;
-    box-shadow: 0 2px 8px 2px transparentize(black, 0.93),
-                0 3px 20px 10px transparentize(black, 0.95),
-                0 6px 32px 16px transparentize(black, 0.98),
-                0 0 0 1px transparentize(black, if($contrast == 'high', .2, .95));
+    box-shadow: 0 2px 8px 2px RGB(0 0 6 / 7%),
+                0 3px 20px 10px RGB(0 0 6 / 5%),
+                0 6px 32px 16px RGB(0 0 6 / 2%),
+                0 0 0 1px RGB(0 0 6 / #{if($contrast == 'high', 80%, 5%)});
+    transition: border-radius 100ms ease-out, box-shadow 250ms ease;
 
-    > drag-handle {
-      background-color: gtkalpha(currentColor, .25);
-      min-width: 60px;
-      min-height: 4px;
-      margin: 6px;
+    > stack > widget > drag-handle {
+      background-color: color-mix(in srgb, currentColor 25%, transparent);
+      min-width: 54px;
+      min-height: 6px;
+      margin: 15px;
       border-radius: 99px;
     }
 
     > outline {
-      border-top-left-radius: $window_radius;
-      border-top-right-radius: $window_radius;
       box-shadow: inset 1px 0 $window_outline_color,
                   inset -1px 0 $window_outline_color,
                   inset 0 1px $window_outline_color;
+      transition: border-radius 100ms ease-out;
+    }
+
+    > stack > button {
+      @include focus-ring($outer: true, $offset: 0, $transition: $button_transition);
+
+      border-radius: 0;
+      padding: 0;
+      min-width: 0;
+      min-height: 0;
+      font-weight: inherit;
+      background: none;
+      box-shadow: none;
+
+      &:hover {
+        background: $view_hover_color;
+      }
+
+      &.keyboard-activating,
+      &:active {
+        background: $view_active_color;
+      }
+
+      &.inert {
+        &:hover, &:active, &.keyboard-activating {
+          background: none;
+        }
+      }
+    }
+
+    &,
+    > outline,
+    > stack > widget,
+    > stack > button,
+    > stack > button > widget {
+      border-top-left-radius: $dialog_radius;
+      border-top-right-radius: $dialog_radius;
+    }
+
+    &.flush-left > outline {
+      box-shadow: inset -1px 0 $window_outline_color,
+                  inset 0 1px $window_outline_color;
+    }
+
+    &.flush-right > outline {
+      box-shadow: inset 1px 0 $window_outline_color,
+                  inset 0 1px $window_outline_color;
+    }
+
+    &.flush-left.flush-right > outline {
+      box-shadow: inset 0 1px $window_outline_color;
+    }
+
+    &.bottom-bar {
+      $border: color-mix(in srgb, var(--shade-color) 75%, transparent);
+
+      @if $contrast == 'high' {
+        $border: RGB(0 0 6 / 80%);
+      }
+
+      box-shadow: 0 0 0 1px $border,
+                  0 2px 8px 2px var(--shade-color),
+                  0 3px 20px 10px RGB(0 0 6 / 5%),
+                  0 6px 32px 16px RGB(0 0 6 / 2%);
+
+      &.hidden {
+        box-shadow: none;
+      }
 
       &.flush-left {
-        box-shadow: inset -1px 0 $window_outline_color,
-                    inset 0 1px $window_outline_color;
+        &,
+        > outline,
+        > stack > widget,
+        > stack > button,
+        > stack > button > widget {
+          border-top-left-radius: 0;
+        }
       }
 
       &.flush-right {
-        box-shadow: inset 1px 0 $window_outline_color,
-                    inset 0 1px $window_outline_color;
+        &,
+        > outline,
+        > stack > widget,
+        > stack > button,
+        > stack > button > widget {
+          border-top-right-radius: 0;
+        }
       }
 
-      &.flush-left.flush-right {
-        box-shadow: inset 0 1px $window_outline_color;
+      @if $contrast != 'high' {
+        &, &.flush-left, &.flush-right, &.flush-left.flush-right {
+          > outline,
+          > stack > widget,
+          > stack > button,
+          > stack > button > widget {
+            box-shadow: none;
+          }
+        }
       }
+    }
+
+    &.has-drag-handle toolbarview .top-bar > windowhandle {
+      min-height: 36px;
+    }
+
+    &.has-drag-handle toolbarview toolbarview .top-bar > windowhandle {
+      min-height: 0;
     }
   }
 }

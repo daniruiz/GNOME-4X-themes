@@ -1,13 +1,13 @@
 tabbar {
   .box {
-    background-color: $headerbar_bg_color;
-    color: $headerbar_fg_color;
-    box-shadow: inset 0 -1px if($contrast == 'high', $headerbar_border_color, $headerbar_shade_color);
+    background-color: var(--headerbar-bg-color);
+    color: var(--headerbar-fg-color);
+    box-shadow: inset 0 -1px if($contrast == 'high', $headerbar_border_color, var(--headerbar-shade-color));
     padding: 1px;
     padding-top: 0;
 
     &:backdrop {
-      background-color: $headerbar_backdrop_color;
+      background-color: var(--headerbar-backdrop-color);
       transition: background-color $backdrop_transition;
 
       > scrolledwindow,
@@ -43,7 +43,7 @@ tabbar {
       min-width: 2px;
       border-radius: 2px;
       margin: 3px 6px;
-      background: if($contrast == 'high', $accent_color, gtkalpha($accent_color, 0.5));
+      background: if($contrast == 'high', var(--accent-color), color-mix(in srgb, var(--accent-color) 50%, transparent));
     }
   }
 
@@ -128,13 +128,13 @@ tabbar {
 }
 
 dnd tab {
-  background-color: $headerbar_bg_color;
+  background-color: var(--headerbar-bg-color);
   background-image: image($selected_active_color);
-  color: $headerbar_fg_color;
+  color: var(--headerbar-fg-color);
 
-  box-shadow: 0 0 0 1px transparentize(black, 0.97),
-              0 1px 3px 1px transparentize(black, .93),
-              0 2px 6px 2px transparentize(black, .97);
+  box-shadow: 0 0 0 1px RGB(0 0 0 / 3%),
+              0 1px 3px 1px RGB(0 0 0 / 7%),
+              0 2px 6px 2px RGB(0 0 0 / 3%);
 
   @if $contrast == 'high' {
     outline: 1px solid $border_color;
@@ -162,7 +162,7 @@ dnd {
     indicator {
       min-height: 2px;
       border-radius: 2px;
-      background: if($contrast == 'high', $accent_color, gtkalpha($accent_color, 0.5));
+      background: if($contrast == 'high', var(--accent-color), color-mix(in srgb, var(--accent-color) 50%, transparent));
       transform: translateY(4px);
     }
   }
@@ -180,8 +180,8 @@ tabthumbnail {
   }
 
   &:drop(active) {
-    box-shadow: inset 0 0 0 2px gtkalpha($drop_target_color, .4);
-    background-color: gtkalpha($drop_target_color, .1);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, $drop_target_color 40%, transparent);
+    background-color: color-mix(in srgb, $drop_target_color 10%, transparent);
   }
 
   transition: box-shadow 200ms $ease-out-quad, background-color $ease-out-quad;
@@ -191,12 +191,12 @@ tabthumbnail {
     &:dir(rtl) { transform: translate(-8px, -8px); }
 
     > widget {
-      background: $accent_color;
+      background: var(--accent-color);
       min-width: 12px;
       min-height: 12px;
       border-radius: 8px;
       margin: 3px;
-      box-shadow: 0 1px 2px gtkalpha($accent_color, .4);
+      box-shadow: 0 1px 2px color-mix(in srgb, var(--accent-color) 40%, transparent);
     }
   }
 
@@ -211,15 +211,15 @@ tabthumbnail {
     color: inherit;
 
     @if $contrast == 'high' {
-      box-shadow: 0 0 0 1px transparentize(black, 0.5),
-                  0 1px 3px 1px transparentize(black, .93),
-                  0 2px 6px 2px transparentize(black, .97);
+      box-shadow: 0 0 0 1px RGB(0 0 6 / 50%),
+                  0 1px 3px 1px RGB(0 0 6 / 7%),
+                  0 2px 6px 2px RGB(0 0 6 / 3%);
     }
   }
 
   &.pinned .card {
-    background-color: $thumbnail_bg_color;
-    color: $thumbnail_fg_color;
+    background-color: var(--thumbnail-bg-color);
+    color: var(--thumbnail-fg-color);
 
     @if $contrast == 'high' {
       outline: 1px solid $window_outline_color;
@@ -239,7 +239,7 @@ tabthumbnail {
 
   button.circular {
     margin: 6px;
-    background-color: gtkalpha($thumbnail_bg_color, .75);
+    background-color: color-mix(in srgb, var(--thumbnail-bg-color) 75%, transparent);
     min-width: 24px;
     min-height: 24px;
 
@@ -248,17 +248,22 @@ tabthumbnail {
     }
 
     &:hover {
-      background-color: gtkalpha(gtkmix($thumbnail_bg_color, currentColor, 90%), .75);
+      background-color: color-mix(in srgb, var(--thumbnail-bg-color) calc(0.9 * 75%), currentColor calc(0.1 * 75%));
     }
 
     &:active {
-      background-color: gtkalpha(gtkmix($thumbnail_bg_color, currentColor, 80%), .75);
+      background-color: color-mix(in srgb, var(--thumbnail-bg-color) calc(0.8 * 75%), currentColor calc(0.2 * 75%));
     }
   }
 }
 
-taboverview > .overview  .new-tab-button {
-  margin: 18px;
+taboverview > .overview {
+  color: var(--overview-fg-color);
+  background-color: var(--overview-bg-color);
+
+  .new-tab-button {
+    margin: 18px;
+  }
 }
 
 tabview:drop(active),

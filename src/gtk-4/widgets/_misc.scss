@@ -31,30 +31,23 @@ separator {
   }
 }
 
-/*********************
- * App Notifications *
- *********************/
-
-.app-notification {
-  @extend %osd;
-
-  padding: 10px;
-  border-spacing: 10px;
-  border-radius: 0 0 $card_radius $card_radius;
-  background-color: $osd_bg_color;
-  background-image: linear-gradient(to bottom, transparentize(black, 0.8),
-                                               transparent 2px);
-  background-clip: padding-box;
-
-  border { border: none; }
-}
-
 /**********
  * Toasts *
  **********/
 
 toast {
-  @extend %osd;
+  background: $toast_bg_color;
+  color: $toast_fg_color;
+  box-shadow: 0 1px 3px 1px RGB(0 0 6 / 7%),
+              0 2px 6px 2px RGB(0 0 6 / 3%);
+
+  --standalone-color-oklab: #{$standalone-color-oklab-dark};
+
+  --accent-color: oklab(from var(--accent-bg-color) var(--standalone-color-oklab));
+  --destructive-color: oklab(from var(--destructive-bg-color) var(--standalone-color-oklab));
+  --success-color: oklab(from var(--success-bg-color) var(--standalone-color-oklab));
+  --warning-color: oklab(from var(--warning-bg-color) var(--standalone-color-oklab));
+  --error-color: oklab(from var(--error-bg-color) var(--standalone-color-oklab));
 
   margin: 12px;
   margin-bottom: 24px;
@@ -85,7 +78,6 @@ video {
     min-height: 64px;
     border-radius: 32px;
   }
-  background: black;
 }
 
 /******************
@@ -108,7 +100,7 @@ dialog.about {
 
     .app-version {
       padding: 3px 18px;
-      color: $accent_color;
+      color: var(--accent-color);
       border-radius: 999px;
       margin-top: 3px;
     }
@@ -140,17 +132,20 @@ statuspage {
       border-spacing: 12px;
 
       > .icon {
+        color: color-mix(in srgb, currentColor var(--dim-opacity), transparent);
         -gtk-icon-size: 128px;
 
-        color: gtkalpha(currentColor, $dim_label_opacity);
-
         &:disabled {
-          opacity: $disabled_opacity;
+          opacity: var(--disabled-opacity);
         }
 
         &:not(:last-child) {
           margin-bottom: 24px;
         }
+      }
+
+      > .title {
+        @extend .title-1;
       }
     }
   }
@@ -169,7 +164,26 @@ statuspage {
       }
 
       > .title {
-        font-size: 18pt;
+        @extend .title-2;
+      }
+    }
+  }
+
+  &.spinner > scrolledwindow > viewport > box {
+    margin: 24px 12px;
+    border-spacing: 24px;
+
+    > clamp > box {
+      > .icon {
+        -gtk-icon-size: 64px;
+
+        &:not(:last-child) {
+          margin-bottom: 12px;
+        }
+      }
+
+      > .title {
+        @extend .title-2;
       }
     }
   }
@@ -179,16 +193,16 @@ statuspage {
 
 .card {
   @at-root %card, & {
-    background-color: $card_bg_color;
-    color: $card_fg_color;
+    background-color: var(--card-bg-color);
+    color: var(--card-fg-color);
     border-radius: $card_radius;
-    box-shadow: 0 0 0 1px if($contrast == 'high', $border_color, transparentize(black, 0.97)),
-                0 1px 3px 1px transparentize(black, .93),
-                0 2px 6px 2px transparentize(black, .97);
+    box-shadow: 0 0 0 1px if($contrast == 'high', $border_color, RGB(0 0 6 / 3%)),
+                0 1px 3px 1px RGB(0 0 6 / 7%),
+                0 2px 6px 2px RGB(0 0 6 / 3%);
 
     .osd &, &.osd {
-      background-color: gtkalpha(currentColor, .1);
-      color: inherit;
+      background-color: color-mix(in srgb, currentColor 10%, transparent);
+      color: $osd_fg_color;
 
       @if $contrast == 'high' {
         box-shadow: 0 0 0 1px $border_color;
@@ -200,21 +214,15 @@ statuspage {
 
   @include focus-ring($offset: -1px);
 
-  .osd &, &.osd {
-    &:focus:focus-visible {
-      outline-color: $osd_focus_color;
-    }
-  }
-
   &.activatable {
     transition: $focus_transition, $button_transition;
 
     &:hover {
-      background-image: image(gtkalpha(currentColor, .03));
+      background-image: image(color-mix(in srgb, currentColor 3%, transparent));
     }
 
     &:active {
-      background-image: image(gtkalpha(currentColor, .08));
+      background-image: image(color-mix(in srgb, currentColor 8%, transparent));
     }
   }
 }
@@ -225,5 +233,5 @@ flap,
 leaflet,
 navigation-view,
 overlay-split-view {
-  @include transition-shadows($shade_color);
+  @include transition-shadows();
 }

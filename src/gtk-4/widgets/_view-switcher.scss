@@ -1,5 +1,6 @@
 viewswitcher {
   border-spacing: 3px;
+  min-height: 34px;
 
   &.narrow {
     margin-top: -3px;
@@ -88,7 +89,7 @@ indicatorbin {
 
   > indicator {
     margin: 1px;
-    background: gtkalpha(currentColor, .4);
+    background: color-mix(in srgb, currentColor 40%, transparent);
   }
 
   > mask {
@@ -97,7 +98,7 @@ indicatorbin {
   }
 
   &.needs-attention > indicator {
-    background: $accent_color;
+    background: var(--accent-color);
   }
 
   &.badge {
@@ -115,9 +116,9 @@ indicatorbin {
     }
 
     &.needs-attention > indicator {
-      background: $accent_bg_color;
+      background: var(--accent-bg-color);
 
-      > label { color: $accent_fg_color; }
+      > label { color: var(--accent-fg-color); }
     }
   }
 }

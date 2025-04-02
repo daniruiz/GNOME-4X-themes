@@ -30,8 +30,8 @@ dropdown {
     .dropdown-searchbar {
       padding: 6px;
 
-      + scrolledwindow {
-        @include undershoot(top, $popover_shade_color);
+      + scrolledwindow:not(.undershoot-top) {
+        @include undershoot(top);
       }
     }
   }

@@ -7,13 +7,11 @@
     }
   }
 
-  &.osd button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
-    &:focus:focus-visible {
-      outline-color: $osd_focus_color;
-    }
-  }
-
   menubutton:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+    &:disabled {
+      filter: none;
+    }
+
     &.image-button > button {
       @extend %button_basic_flat;
     }
@@ -27,22 +25,39 @@
     }
   }
 
-  menubutton.raised > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
-    &.arrow-button,
-    &.image-button,
-    &.image-text-button {
-      @extend %button_basic_raised;
+  menubutton.raised {
+    > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+      &.arrow-button,
+      &.image-button,
+      &.image-text-button {
+        @extend %button_basic_raised;
+
+        &:disabled:not(:checked) {
+          filter: none;
+        }
+      }
     }
   }
 
   menubutton.suggested-action,
-  menubutton.destructive-action,
   menubutton.opaque {
     > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
       @extend %opaque_button;
 
       color: inherit;
       background-color: transparent;
+
+      &:disabled:not(:checked) {
+        filter: none;
+      }
+    }
+  }
+
+  menubutton.destructive-action > button:not(.raised):not(.suggested-action):not(.destructive-action):not(.opaque) {
+    @extend %destructive_button;
+
+    &:disabled:not(:checked) {
+      filter: none;
     }
   }
 
@@ -82,7 +97,7 @@
   // stand-alone OSD toolbars
   &.osd {
     padding: 12px;
-    border-radius: $card_radius;
+    border-radius: $button_radius + 6px;
   }
 }
 
@@ -99,12 +114,12 @@ searchbar {
   > revealer > box {
     padding: 6px 6px 7px 6px;
 
-    background-color: $headerbar_bg_color;
-    color: $headerbar_fg_color;
-    box-shadow: inset 0 -1px if($contrast == 'high', $headerbar_border_color, $headerbar_shade_color);
+    background-color: var(--headerbar-bg-color);
+    color: var(--headerbar-fg-color);
+    box-shadow: inset 0 -1px if($contrast == 'high', $headerbar_border_color, var(--headerbar-shade-color));
 
     &:backdrop {
-      background-color: $headerbar_backdrop_color;
+      background-color: var(--headerbar-backdrop-color);
       transition: background-color $backdrop_transition;
 
       > * {
@@ -170,9 +185,9 @@ searchbar {
  ****************/
 
 actionbar > revealer > box {
-  background-color: $headerbar_bg_color;
-  color: $headerbar_fg_color;
-  box-shadow: inset 0 1px if($contrast == 'high', $headerbar_border_color, $headerbar_shade_color);
+  background-color: var(--headerbar-bg-color);
+  color: var(--headerbar-fg-color);
+  box-shadow: inset 0 1px if($contrast == 'high', $headerbar_border_color, var(--headerbar-shade-color));
   padding: 7px 6px 6px 6px;
 
   @extend %toolbar;
@@ -182,7 +197,7 @@ actionbar > revealer > box {
   }
 
   &:backdrop {
-    background-color: $headerbar_backdrop_color;
+    background-color: var(--headerbar-backdrop-color);
     transition: background-color $backdrop_transition;
 
     > * {
@@ -217,19 +232,23 @@ actionbar > revealer > box {
 /*************
  * AdwBanner *
  *************/
-banner > revealer > widget {
-  /* There are 2 more instances in _sidebars.css, keep in sync with that */
-  background-color: gtkmix($accent_bg_color, $window_bg_color, 30%);
-  color: $window_fg_color;
-  padding: 6px;
+banner {
+  --banner-color: #7d7d83;
 
-  &:backdrop {
-    background-color: gtkmix($accent_bg_color, $window_bg_color, 15%);
-    transition: background-color $backdrop_transition;
+  > revealer > widget {
+    /* There are 2 more instances in _sidebars.css, keep in sync with that */
+    background-color: color-mix(in srgb, var(--banner-color) 30%, var(--window-bg-color));
+    color: var(--window-fg-color);
+    padding: 6px;
 
-    > label, > button {
-      filter: opacity(.5);
-      transition: filter $backdrop_transition;
+    &:backdrop {
+      background-color: color-mix(in srgb, var(--banner-color) 15%, var(--window-bg-color));
+      transition: background-color $backdrop_transition;
+
+      > label, > button {
+        filter: opacity(.5);
+        transition: filter $backdrop_transition;
+      }
     }
   }
 }
@@ -261,11 +280,11 @@ toolbarview {
     }
 
     &.raised {
-      background-color: $headerbar_bg_color;
-      color: $headerbar_fg_color;
+      background-color: var(--headerbar-bg-color);
+      color: var(--headerbar-fg-color);
 
       &:backdrop {
-        background-color: $headerbar_backdrop_color;
+        background-color: var(--headerbar-backdrop-color);
         transition: background-color $backdrop_transition;
       }
     }
@@ -277,20 +296,20 @@ toolbarview {
   }
 
   > .top-bar.raised {
-    box-shadow: 0 1px if($contrast == 'high', $border_color, gtkalpha($headerbar_shade_color, .5)),
-                0 2px 4px gtkalpha($headerbar_shade_color, .5);
+    box-shadow: 0 1px if($contrast == 'high', $border_color, color-mix(in srgb, var(--headerbar-shade-color) 50%, transparent)),
+                0 2px 4px color-mix(in srgb, var(--headerbar-shade-color) 50%, transparent);
 
     &.border {
-      box-shadow: 0 1px if($contrast == 'high', $border_color, $headerbar_darker_shade_color);
+      box-shadow: 0 1px if($contrast == 'high', $border_color, var(--headerbar-darker-shade-color));
     }
   }
 
   > .bottom-bar.raised {
-    box-shadow: 0 -1px if($contrast == 'high', $border_color, gtkalpha($headerbar_shade_color, .5)),
-                0 -2px 4px gtkalpha($headerbar_shade_color, .5);
+    box-shadow: 0 -1px if($contrast == 'high', $border_color, color-mix(in srgb, var(--headerbar-shade-color) 50%, transparent)),
+                0 -2px 4px color-mix(in srgb, var(--headerbar-shade-color) 50%, transparent);
 
     &.border {
-      box-shadow: 0 -1px if($contrast == 'high', $border_color, $headerbar_darker_shade_color);
+      box-shadow: 0 -1px if($contrast == 'high', $border_color, var(--headerbar-darker-shade-color));
     }
   }
 
@@ -303,7 +322,7 @@ toolbarview {
     background-repeat: repeat-x;
   }
 
-  window.devel dialog & > .top-bar {
+  window.devel sheet & > .top-bar {
     background-image: unset;
     background-repeat: unset;
   }

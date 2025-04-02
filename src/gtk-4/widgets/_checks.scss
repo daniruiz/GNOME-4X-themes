@@ -1,22 +1,25 @@
+$check_radius: 6px;
+
 checkbutton {
   border-spacing: 4px;
-  border-radius: $button_radius + 3px;
+  border-radius: $check_radius + 3px;
   padding: 3px;
 
   @include focus-ring();
-
-  .osd &:focus:focus-visible {
-    outline-color: $osd_focus_color;
-  }
 
   &.text-button {
     // this is for a nice focus on check and radios text
     padding: 4px;
   }
+
+  &.grouped {
+    border-radius: 999px;
+  }
 }
 
 check,
 radio {
+  transition: $button_transition;
   min-height: 14px;
   min-width: 14px;
   -gtk-icon-size: 14px;
@@ -31,7 +34,7 @@ radio {
   &:not(:checked):not(:indeterminate) {
     &:hover {
       @if $contrast == 'high' {
-        box-shadow: inset 0 0 0 2px gtkalpha(currentColor, .6);
+        box-shadow: inset 0 0 0 2px color-mix(in srgb, currentColor 60%, transparent);
       } @else {
         box-shadow: inset 0 0 0 2px $trough_hover_color;
       }
@@ -39,7 +42,7 @@ radio {
 
     &:active {
       @if $contrast == 'high' {
-        background-color: gtkalpha(currentColor, .6);
+        background-color: color-mix(in srgb, currentColor 60%, transparent);
       } @else {
         background-color: $trough_active_color;
       }
@@ -49,29 +52,21 @@ radio {
 
   &:checked,
   &:indeterminate {
-    background-color: $fill_color;
-    color: $fill_text_color;
+    background-color: var(--accent-bg-color);
+    color: var(--accent-fg-color);
     box-shadow: none;
 
-    &:hover { background-image: image(gtkalpha(currentColor, .1)); }
-    &:active { background-image: image(transparentize(black, .8)); }
+    &:hover { background-image: image(color-mix(in srgb, currentColor 10%, transparent)); }
+    &:active { background-image: image(RGB(0 0 6 / 20%)); }
   }
 
   &:disabled {
-    filter: opacity($disabled_opacity);
-  }
-
-  .osd & {
-    &:checked,
-    &:indeterminate {
-      background-color: $osd_fill_bg_color;
-      color: $osd_fill_fg_color;
-    }
+    filter: Opacity(var(--disabled-opacity));
   }
 }
 
 check {
-  border-radius: $button_radius;
+  border-radius: $check_radius;
 
   &:checked { -gtk-icon-source: -gtk-scaled(-gtk-recolor(url("assets/check-symbolic.symbolic.png")),
                                             -gtk-recolor(url("assets/check@2-symbolic.symbolic.png"))); }

@@ -2,32 +2,30 @@ label {
   caret-color: currentColor;
 
   &.separator {
-    @extend .dim-label;
+    @extend .dimmed;
   }
 
   &:disabled {
-    filter: opacity($disabled_opacity);
+    filter: Opacity(var(--disabled-opacity));
   }
 }
 
-.dim-label {
-  opacity: $dim_label_opacity;
+.dimmed {
+  opacity: var(--dim-opacity);
 }
 
 .accent {
-  color: $accent_color;
+  color: var(--accent-color);
 }
 
-.success {
-  color: $success_color;
-}
+@each $e_type in error, warning, success {
+  .#{$e_type} {
+    color: var(--accent-color);
 
-.warning {
-  color: $warning_color;
-}
-
-.error {
-  color: $error_color;
+    --accent-bg-color: var(--#{$e_type}-bg-color);
+    --accent-fg-color: var(--#{$e_type}-fg-color);
+    --accent-color: var(--#{$e_type}-color);
+  }
 }
 
 /**********************
@@ -36,46 +34,45 @@ label {
 
 .title-1 {
   font-weight: 800;
-  font-size: 20pt;
+  font-size: 181%;
 }
 
 .title-2 {
   font-weight: 800;
-  font-size: 15pt;
+  font-size: 136%;
 }
 
 .title-3 {
   font-weight: 700;
-  font-size: 15pt;
+  font-size: 136%;
 }
 
 .title-4 {
   font-weight: 700;
-  font-size: 13pt;
+  font-size: 118%;
 }
 
 .heading {
   font-weight: 700;
-  font-size: 11pt;
 }
 
 .body {
   font-weight: 400;
-  font-size: 11pt;
 }
 
 .caption-heading {
   font-weight: 700;
-  font-size: 9pt;
+  font-size: 82%;
 }
 
 .caption {
   font-weight: 400;
-  font-size: 9pt;
+  font-size: 82%;
 }
 
 .monospace {
-  font-family: monospace;
+  font-family: var(--monospace-font-family);
+  font-size: var(--monospace-font-size);
 }
 
 .numeric {
@@ -87,6 +84,7 @@ label {
  *******************/
 
 editablelabel > stack > text {
-  color: $view_fg_color;
-  background-color: $view_bg_color;
+  color: var(--view-fg-color);
+  background-color: var(--view-bg-color);
 }
+

@@ -16,18 +16,14 @@ entry {
 
     @include focus-ring($focus-state: ':focus-within');
 
-    .osd &:focus-within {
-      outline-color: $osd_focus_color;
-    }
-
     > text {
       > placeholder {
-        @extend .dim-label;
+        @extend .dimmed;
       }
 
       > block-cursor {
-        color: $view_bg_color;
-        background-color: $view_fg_color;
+        color: var(--view-bg-color);
+        background-color: var(--view-fg-color);
       }
     }
 
@@ -41,26 +37,7 @@ entry {
       }
     }
 
-    &:disabled { filter: opacity($disabled_opacity); }
-
-    // entry error and warning style
-    @each $e_type, $e_color in (error,   $error_color),
-                               (warning, $warning_color),
-                               (success, $success_color) {
-      &.#{$e_type} {
-        @include focus-ring($focus-state: ':focus-within', $fc: gtkalpha(currentColor, $focus_border_opacity));
-
-        > text {
-          > selection:focus-within { background-color: gtkalpha($e_color, .2); }
-
-          > cursor-handle > contents { background-color: currentColor; }
-        }
-
-        > progress > trough > progress {
-          border-color: currentColor;
-        }
-      }
-    }
+    &:disabled { filter: Opacity(var(--disabled-opacity)); }
 
     > image { // icons inside the entry
       opacity: if($contrast == 'high', .85, .7);
@@ -98,14 +75,10 @@ entry {
         background-image: none;
         border-radius: 0;
         border-width: 0 0 2px;
-        border-color: $accent_bg_color;
+        border-color: var(--accent-bg-color);
         border-style: solid;
         box-shadow: none;
       }
     }
-  }
-
-  .osd & > progress > trough > progress {
-    border-color: $osd_fill_bg_color;
   }
 }

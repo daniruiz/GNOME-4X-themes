@@ -1,11 +1,18 @@
-$button_color: gtkalpha(currentColor, .1);
-$button_hover_color: gtkalpha(currentColor, .15);
-$button_active_color: gtkalpha(currentColor, .3);
-$button_checked_color: gtkalpha(currentColor, .3);
-$button_checked_hover_color: gtkalpha(currentColor, .35);
-$button_checked_active_color: gtkalpha(currentColor, .4);
+$button_color: color-mix(in srgb, currentColor 10%, transparent);
+$button_hover_color: color-mix(in srgb, currentColor 15%, transparent);
+$button_active_color: color-mix(in srgb, currentColor 30%, transparent);
+$button_checked_color: color-mix(in srgb, currentColor 30%, transparent);
+$button_checked_hover_color: color-mix(in srgb, currentColor 35%, transparent);
+$button_checked_active_color: color-mix(in srgb, currentColor 40%, transparent);
 
-$opaque_button_default_bg: gtkmix($window_bg_color, $window_fg_color, 85%);
+$opaque_button_default_bg: color-mix(in srgb, var(--window-bg-color) 85%, var(--window-fg-color));
+
+$destructive_button_color: color-mix(in srgb, currentColor 15%, transparent);
+$destructive_button_hover_color: color-mix(in srgb, currentColor 20%, transparent);
+$destructive_button_active_color: color-mix(in srgb, currentColor 35%, transparent);
+$destructive_button_checked_color: color-mix(in srgb, currentColor 35%, transparent);
+$destructive_button_checked_hover_color: color-mix(in srgb, currentColor 40%, transparent);
+$destructive_button_checked_active_color: color-mix(in srgb, currentColor 45%, transparent);
 
 %button,
 button {
@@ -17,10 +24,6 @@ button {
     font-weight: bold;
 
     @include focus-ring($transition: $button_transition);
-
-    .osd &:focus:focus-visible {
-      outline-color: $osd_focus_color;
-    }
 
     @at-root %button_basic_raised, & {
       background-color: $button_color;
@@ -53,7 +56,7 @@ button {
     }
 
     &:disabled {
-      filter: opacity($disabled_opacity);
+      filter: Opacity(var(--disabled-opacity));
 
       label {
         filter: none;
@@ -113,7 +116,7 @@ button {
     @include focus-ring($outer: true, $offset: 1px, $transition: $button_transition);
 
     color: $osd_fg_color;
-    background-color: transparentize(black, .35);
+    background-color: RGB(0 0 0 / 65%);
 
     @if $contrast == 'high' {
       box-shadow: 0 0 0 1px currentColor;
@@ -121,35 +124,31 @@ button {
 
     &:hover {
       color: white;
-      background-color: gtkalpha(gtkmix(black, currentColor, 85%), .65);
+      background-color: color-mix(in srgb, black calc(0.85 * 65%), currentColor calc(0.15 * 65%));
     }
 
     &.keyboard-activating,
     &:active {
       color: white;
-      background-color: gtkalpha(gtkmix(black, currentColor, 75%), .65);
+      background-color: color-mix(in srgb, black calc(0.75 * 65%), currentColor calc(0.25 * 65%));
     }
 
     &:checked {
-      background-color: gtkalpha(gtkmix(black, currentColor, 80%), .65);
+      background-color: color-mix(in srgb, black calc(0.8 * 65%), currentColor calc(0.2 * 65%));
 
       &:hover {
-        background-color: gtkalpha(gtkmix(black, currentColor, 75%), .65);
+        background-color: color-mix(in srgb, black calc(0.75 * 65%), currentColor calc(0.25 * 65%));
       }
 
       &.keyboard-activating,
       &:active {
-        background-color: gtkalpha(gtkmix(black, currentColor, 65%), .65);
+        background-color: color-mix(in srgb, black calc(0.65 * 65%), currentColor calc(0.35 * 65%));
       }
     }
 
     // Specificity bump
     &:drop(active) {
       @extend %button_basic_drop_active;
-    }
-
-    .osd &:focus:focus-visible {
-      outline-color: $osd_focus_color;
     }
   }
 
@@ -158,29 +157,55 @@ button {
 
     @include focus-ring($outer: true, $offset: 1px, $transition: $button_transition);
 
-    .osd &:focus:focus-visible {
-      outline-color: $osd_focus_color;
-    }
-
     &:hover {
-      background-image: image(gtkalpha(currentColor, .1));
+      background-image: image(color-mix(in srgb, currentColor 10%, transparent));
     }
 
     &.keyboard-activating,
     &:active {
-      background-image: image(transparentize(black, .8));
+      background-image: image(RGB(0 0 6 / 20%));
     }
 
     &:checked {
-      background-image: image(transparentize(black, .85));
+      background-image: image(RGB(0 0 6 / 15%));
 
       &:hover {
-        background-image: image(transparentize(black, .95));
+        background-image: image(RGB(0 0 6 / 5%));
       }
 
       &.keyboard-activating,
       &:active {
-        background-image: image(transparentize(black, .7));
+        background-image: image(RGB(0 0 6 / 30%));
+      }
+    }
+  }
+
+  @at-root %destructive_button {
+    --accent-bg-color: var(--destructive-bg-color);
+    --accent-fg-color: var(--destructive-fg-color);
+    --accent-color: var(--destructive-color);
+
+    color: var(--accent-color);
+    background-color: $destructive_button_color;
+
+    &:hover {
+      background-color: $destructive_button_hover_color;
+    }
+
+    &:active, &.keyboard-activating {
+      background-color: $destructive_button_active_color;
+    }
+
+    &:checked {
+      background-color: $destructive_button_checked_color;
+
+      &:hover {
+        background-color: $destructive_button_checked_hover_color;
+      }
+
+      &.keyboard-activating,
+      &:active {
+        background-color: $destructive_button_checked_active_color;
       }
     }
   }
@@ -189,37 +214,27 @@ button {
     @extend %opaque_button;
 
     background-color: $opaque_button_default_bg;
-    color: $window_fg_color;
-  }
-
-  &.destructive-action {
-    @extend %opaque_button;
-
-    color: $destructive_fg_color;
-
-    &, &:checked {
-      background-color: $destructive_bg_color;
-    }
+    color: var(--window-fg-color);
   }
 
   &.suggested-action {
     @extend %opaque_button;
 
-    color: $accent_fg_color;
+    color: var(--accent-fg-color);
 
     &, &:checked {
-      background-color: $accent_bg_color;
+      background-color: var(--accent-bg-color);
     }
+  }
+
+  &.destructive-action {
+    @extend %destructive_button;
   }
 
   @at-root %button_basic_flat,
   &.flat {
     background: transparent;
     @include focus-ring($transition: $button_transition);
-
-    .osd &:focus:focus-visible {
-      outline-color: $osd_focus_color;
-    }
 
     box-shadow: none;
 
@@ -311,7 +326,7 @@ button {
   }
 
   &.card {
-    background-color: $card_bg_color;
+    background-color: var(--card-bg-color);
     background-clip: padding-box;
     font-weight: inherit;
     padding: 0;
@@ -328,7 +343,7 @@ button {
     }
 
     &:checked {
-      background-color: $card_bg_color;
+      background-color: var(--card-bg-color);
       background-image: image($view_selected_color);
 
       &:hover { background-image: image($view_selected_hover_color); }
@@ -339,7 +354,7 @@ button {
       &.has-open-popup { background-image: image($view_selected_hover_color); }
 
       .osd & {
-        background-color: gtkalpha(currentColor, .1);
+        background-color: color-mix(in srgb, currentColor 10%, transparent);
       }
     }
 
@@ -350,18 +365,14 @@ button {
   }
 }
 
-%undecorated_button {
-  background-color: transparent;
-}
-
 button.color {
   padding: 5px;
 
   > colorswatch:only-child {
-    border-radius: 2.5px;
+    border-radius: $button_radius - 4.5px;
 
     > overlay {
-      border-radius: 2px;
+      border-radius: $button_radius - 5px;
     }
 
     &:disabled {
@@ -369,7 +380,7 @@ button.color {
     }
 
     &.light > overlay {
-      border-color: gtkalpha($view_fg_color, 0.1);
+      border-color: color-mix(in srgb, var(--view-fg-color) 10%, transparent);
     }
   }
 }
@@ -382,27 +393,34 @@ menubutton {
     > button { @extend %osd_button; }
   }
 
+  &:disabled {
+    filter: opacity($disabled_opacity);
+  }
+
+  > button:disabled:not(:checked) {
+    filter: none;
+  }
+
   &.circular > button { @extend %circular_button; }
   &.flat > button { @extend %button_basic_flat; }
   &.pill > button { @extend %pill_button; }
+  &.destructive-action > button { @extend %destructive_button; }
 
-  &.suggested-action {
-    background-color: $accent_bg_color;
-    color: $accent_fg_color;
+  &.flat:disabled {
+    filter: none;
   }
 
-  &.destructive-action {
-    background-color: $destructive_bg_color;
-    color: $destructive_fg_color;
+  &.suggested-action {
+    background-color: var(--accent-bg-color);
+    color: var(--accent-fg-color);
   }
 
   &.opaque {
     background-color: $opaque_button_default_bg;
-    color: $window_fg_color;
+    color: var(--window-fg-color);
   }
 
   &.suggested-action,
-  &.destructive-action,
   &.opaque {
     border-radius: $button_radius;
 
@@ -489,9 +507,9 @@ splitbutton {
   }
 
   &:disabled {
-    filter: opacity($disabled_opacity);
+    filter: Opacity(var(--disabled-opacity));
 
-    > button, > menubutton > button {
+    > button, > menubutton, > menubutton > button {
       filter: none;
     }
   }
@@ -514,7 +532,7 @@ splitbutton {
   @at-root %flat_split_button,
   &.flat {
     > separator {
-      background: gtkalpha(currentColor, $dimmer_opacity);
+      background: color-mix(in srgb, currentColor $dimmer_opacity, transparent);
     }
 
     &:hover,
@@ -527,7 +545,7 @@ splitbutton {
       }
 
       @if $contrast == 'high' {
-        box-shadow: inset 0 0 0 1px $thin_border_color;
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor calc(var(--border-opacity) / 3), transparent);
       }
     }
 
@@ -552,22 +570,29 @@ splitbutton {
   }
 
   &.suggested-action {
-    background-color: $accent_bg_color;
-    color: $accent_fg_color;
+    background-color: var(--accent-bg-color);
+    color: var(--accent-fg-color);
   }
 
   &.destructive-action {
-    background-color: $destructive_bg_color;
-    color: $destructive_fg_color;
+    --accent-bg-color: var(--destructive-bg-color);
+    --accent-fg-color: var(--destructive-fg-color);
+    --accent-color: var(--destructive-color);
+
+    color: var(--accent-color);
+
+    > button,
+    > menubutton > button {
+      @extend %destructive_button;
+    }
   }
 
   &.opaque {
     background-color: $opaque_button_default_bg;
-    color: $window_fg_color;
+    color: var(--window-fg-color);
   }
 
   &.suggested-action,
-  &.destructive-action,
   &.opaque {
     > button, > menubutton > button {
       @extend %opaque_button;
@@ -578,7 +603,7 @@ splitbutton {
       }
     }
 
-    $_separator_color: gtkalpha(currentColor, $dimmer_opacity);
+    $_separator_color: color-mix(in srgb, currentColor $dimmer_opacity, transparent);
     > menubutton > button {
       &:dir(ltr) { box-shadow: inset 1px 0 $_separator_color; }
       &:dir(rtl) { box-shadow: inset -1px 0 $_separator_color; }
@@ -614,10 +639,11 @@ buttoncontent {
 tabbutton {
   label {
     font-weight: 800;
-    font-size: 8pt;
+    // We're intentionally using pixels here, as this label is a part of the icon
+    font-size: 10.5px;
 
     &.small {
-      font-size: 6pt;
+      font-size: 8px;
     }
   }
 

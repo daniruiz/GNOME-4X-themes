@@ -5,21 +5,25 @@ $focus_transition: outline-color 200ms $ease-out-quad,
                    outline-offset 200ms $ease-out-quad;
 $button_transition: background 200ms $ease-out-quad,
                     box-shadow 200ms $ease-out-quad;
-$button_radius: 6px;
-$card_radius: $button_radius + 6;
-$menu_radius: 6px;
+$button_radius: 9px;
+$card_radius: 12px;
+$menu_radius: 9px;
 $menu_margin: 6px; //margin around menuitems & sidebar items
 $menu_padding: 12px; //inner menuitem padding
-$window_radius: $button_radius + 6;
-$popover_radius: $window_radius;
+$popover_radius: $menu_radius + 6;
+$dialog_radius: $button_radius + 6;
+
+:root {
+  --window-radius: #{$button_radius + 6};
+}
 
 .background {
-  color: $window_fg_color;
-  background-color: $window_bg_color;
+  color: var(--window-fg-color);
+  background-color: var(--window-bg-color);
 }
 
 dnd {
-  color: $window_fg_color;
+  color: var(--window-fg-color);
 }
 
 .normal-icons {
@@ -31,7 +35,18 @@ dnd {
 }
 
 %osd,
-.osd {
+.osd:not(progressbar):not(button):not(menubutton):not(splitbutton):not(inline-view-switcher) {
+  --accent-bg-color: RGB(255 255 255 / 75%);
+  --accent-fg-color: RGB(0 0 0 / 75%);
+  --scrollbar-outline-color: RGB(0 0 0 / 50%);
+  --standalone-color-oklab: #{$standalone-color-oklab-dark};
+
+  --accent-color: oklab(from var(--accent-bg-color) var(--standalone-color-oklab));
+  --destructive-color: oklab(from var(--destructive-bg-color) var(--standalone-color-oklab));
+  --success-color: oklab(from var(--success-bg-color) var(--standalone-color-oklab));
+  --warning-color: oklab(from var(--warning-bg-color) var(--standalone-color-oklab));
+  --error-color: oklab(from var(--error-bg-color) var(--standalone-color-oklab));
+
   color: $osd_fg_color;
   border: none;
   background-color: $osd_bg_color;
@@ -41,11 +56,11 @@ dnd {
 /* Text selection */
 
 selection {
-  background-color: gtkalpha($view_fg_color, 0.1);
+  background-color: color-mix(in srgb, var(--view-fg-color) 10%, transparent);
   color: transparent;
 
   &:focus-within {
-    background-color: gtkalpha($accent_bg_color, 0.3);
+    background-color: color-mix(in srgb, var(--accent-bg-color) 30%, transparent);
   }
 }
 
@@ -68,24 +83,24 @@ expander-widget {
 
 /* Outline for low res icons */
 .lowres-icon {
-    -gtk-icon-shadow: 0 -1px rgba(0,0,0,0.05),
-      1px 0 rgba(0,0,0,0.1),
-      0 1px rgba(0,0,0,0.3),
-      -1px 0 rgba(0,0,0,0.1);
+    -gtk-icon-shadow: 0 -1px RGB(0 0 6 / 5%),
+      1px 0 RGB(0 0 6 / 10%),
+      0 1px RGB(0 0 6 / 30%),
+      -1px 0 RGB(0 0 6 / 10%);
 }
 
 /* Drop shadow for large icons */
 .icon-dropshadow {
-  -gtk-icon-shadow: 0 1px 12px rgba(0,0,0,0.05),
-      0 -1px rgba(0,0,0,0.05),
-      1px 0 rgba(0,0,0,0.1),
-      0 1px rgba(0,0,0,0.3),
-      -1px 0 rgba(0,0,0,0.1);
+  -gtk-icon-shadow: 0 1px 12px RGB(0 0 6 / 5%),
+      0 -1px RGB(0 0 6 / 5%),
+      1px 0 RGB(0 0 6 / 10%),
+      0 1px RGB(0 0 6 / 30%),
+      -1px 0 RGB(0 0 6 / 10%);
 }
 
 @keyframes needs_attention {
-  from { background-image: radial-gradient(farthest-side, $accent_color 0%, transparent 0%); }
-  to { background-image: radial-gradient(farthest-side, $accent_color 95%, transparent); }
+  from { background-image: radial-gradient(farthest-side, var(--accent-color) 0%, transparent 0%); }
+  to { background-image: radial-gradient(farthest-side, var(--accent-color) 95%, transparent); }
 }
 
 %needs_attention {
@@ -93,7 +108,7 @@ expander-widget {
   // simulates the shadow labels and icons normally have in buttons.
   animation: needs_attention 150ms ease-in;
 
-  background-image: radial-gradient(farthest-side, $accent_color 96%, transparent);
+  background-image: radial-gradient(farthest-side, var(--accent-color) 96%, transparent);
   background-size: 6px 6px;
   background-repeat: no-repeat;
 

@@ -7,16 +7,16 @@
  * Print dialog *
 *****************/
 
-window.print {
+window.print:not(.ssd-frame) {
   drawing {
-    color: $window_fg_color;
+    color: var(--window-fg-color);
     background: none;
     border: none;
     padding: 0;
 
     paper {
       background-color: white;
-      color: transparentize(black, .2);
+      color: RGB(0 0 6 / 80%);
       background-clip: padding-box;
       border: 1px solid $border_color;
     }
@@ -35,7 +35,7 @@ window.print {
  * Page setup dalog *
  ********************/
 
-window.pagesetup {
+window.pagesetup:not(.ssd-frame) {
   headerbar.titlebar {
     @extend .flat;
   }
@@ -45,7 +45,7 @@ window.pagesetup {
  * GtkAboutDialog *
  ******************/
 
-window.aboutdialog {
+window.aboutdialog:not(.ssd-frame) {
   headerbar.titlebar {
     @extend .flat;
   }
@@ -58,7 +58,7 @@ window.aboutdialog {
 /*************************
  * GtkColorChooserDialog *
  *************************/
-window.colorchooser {
+window.colorchooser:not(.ssd-frame) {
   headerbar.titlebar {
     @extend .flat;
   }
@@ -70,27 +70,27 @@ window.colorchooser {
 
 floating-sheet {
   > dimming {
-    background-color: gtkalpha($shade_color, 2);
+    background-color: RGB(from var(--shade-color) r g b / calc(alpha * 2));
   }
 
   > sheet {
-    border-radius: $window_radius;
-    box-shadow: 0 2px 8px 2px transparentize(black, 0.93),
-                0 3px 20px 10px transparentize(black, 0.95),
-                0 6px 32px 16px transparentize(black, 0.98),
-                0 0 0 1px transparentize(black, if($contrast == 'high', .2, .95));
+    border-radius: $dialog_radius;
+    box-shadow: 0 2px 8px 2px RGB(0 0 6 / 7%),
+                0 3px 20px 10px RGB(0 0 6 / 5%),
+                0 6px 32px 16px RGB(0 0 6 / 2%),
+                0 0 0 1px RGB(0 0 6 / #{if($contrast == 'high', 80%, 5%)});
     outline: 1px solid $window_outline_color;
     outline-offset: -1px;
   }
 }
 
 dialog.bottom-sheet {
-  &.landscape sheet {
+  &:not(.narrow) sheet {
     margin-left: 30px;
     margin-right: 30px;
 
-    > outline {
-      &.flush-left, &.flush-right, &.flush-left.flush-right {
+    &.flush-left, &.flush-right, &.flush-left.flush-right {
+      > outline {
         box-shadow: inset 1px 0 $window_outline_color,
                     inset -1px 0 $window_outline_color,
                     inset 0 1px $window_outline_color;
@@ -103,8 +103,8 @@ dialog-host > dialog.background {
   background: none;
 
   sheet {
-    background-color: $window_bg_color;
-    color: $window_fg_color;
+    background-color: var(--window-bg-color);
+    color: var(--window-fg-color);
   }
 }
 
@@ -116,7 +116,7 @@ dialog-host > dialog.view {
   }
 }
 
-dialog-host > dialog.osd {
+dialog-host > dialog.osd:not(progressbar):not(button):not(menubutton):not(splitbutton) {
   background: none;
 
   sheet {

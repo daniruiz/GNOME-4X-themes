@@ -1,10 +1,11 @@
 $row_transition: background-color 200ms $ease-out-quad,
+                 background-image 200ms $ease-out-quad,
                  border-radius 200ms $ease-out-quad;
 
 listview,
 list {
-  color: $view_fg_color;
-  background-color: $view_bg_color;
+  color: var(--view-fg-color);
+  background-color: var(--view-bg-color);
   background-clip: padding-box;
   border-color: $border_color;
 
@@ -38,10 +39,6 @@ row {
   @include focus-ring();
 
   .osd & {
-    &:focus:focus-visible {
-      outline-color: $osd_focus_color;
-    }
-
     &.activatable {
       &:hover { background-color: $hover_color; }
 
@@ -117,7 +114,7 @@ row {
 row {
   label.subtitle {
     font-size: smaller;
-    @extend .dim-label;
+    @extend .dimmed;
   }
 
   > box.header {
@@ -127,7 +124,7 @@ row {
     min-height: 50px;
 
     > .icon:disabled {
-      filter: opacity($disabled_opacity);
+      filter: Opacity(var(--disabled-opacity));
     }
 
     > box.title {
@@ -148,6 +145,10 @@ row {
     > .prefixes,
     > .suffixes {
       border-spacing: 6px;
+
+      > .suffixes {
+        border-spacing: 6px;
+      }
     }
 
     > .icon,
@@ -160,12 +161,22 @@ row {
   &.property > box.header > box.title > {
     .title {
       font-size: smaller;
-      @extend .dim-label;
+      @extend .dimmed;
     }
 
     .subtitle {
       font-size: inherit;
       opacity: 1;
+    }
+  }
+
+  &.property.monospace {
+    font-family: inherit;
+    font-size: inherit;
+
+    & > box.header > box.title > .subtitle {
+      font-family: var(--monospace-font-family);
+      font-size: var(--monospace-font-size);
     }
   }
 }
@@ -175,50 +186,67 @@ row {
  ******************************/
 
 row.entry {
-  &:not(:selected).activatable.focused:hover,
-  &:not(:selected).activatable.focused:active {
-    background-color: transparent;
-  }
-
   &:disabled {
     text {
-      opacity: $disabled_opacity;
+      opacity: var(--disabled-opacity);
     }
 
-    .dim-label, .subtitle {
+    .dimmed, .dim-label, .subtitle {
       opacity: 1;
     }
   }
 
-  .edit-icon, .indicator {
-    min-width: 24px;
-    min-height: 24px;
-    padding: 5px;
-  }
+  > box.header {
+    border-spacing: 0;
+    margin-left: 6px;
+    margin-right: 6px;
 
-  .edit-icon:disabled {
-    opacity: $strong_disabled_opacity;
-  }
+    > .editable-area {
+      padding: 0 6px;
 
-  .indicator {
-    opacity: $dimmer_opacity;
+      > .edit-icon, > .indicator {
+        min-width: 24px;
+        min-height: 24px;
+        padding: 5px;
+      }
+
+      > .edit-icon, > .indicator, > .apply-button {
+        &:dir(ltr) { margin-left: 6px; }
+        &:dir(rtl) { margin-right: 6px; }
+      }
+
+      > .edit-icon:disabled {
+        opacity: $strong_disabled_opacity;
+      }
+
+      > .indicator {
+        opacity: $dimmer_opacity;
+      }
+    }
+
+    > .prefixes {
+      &:dir(ltr) { margin-left: 6px; }
+      &:dir(rtl) { margin-right: 6px; }
+    }
+
+    > .suffixes {
+      &:dir(ltr) { margin-right: 6px; }
+      &:dir(rtl) { margin-left: 6px; }
+    }
   }
 
   &.monospace {
     font-family: inherit;
+    font-size: inherit;
 
     text {
-      font-family: monospace;
+      font-family: var(--monospace-font-family);
+      font-size: var(--monospace-font-size);
     }
   }
 }
 
 row.spin {
-  &:not(:selected).activatable.focused:hover,
-  &:not(:selected).activatable.focused:active {
-    background-color: transparent;
-  }
-
   spinbutton {
     background: none;
     border-spacing: 6px;
@@ -262,25 +290,12 @@ row.spin {
     background-color: transparent;
   }
 
-  @each $e_type, $e_color, $e_bg_color, $e_fg_color in (error,   $error_color,   $error_bg_color,   $error_fg_color),
-                                                       (warning, $warning_color, $warning_bg_color, $warning_fg_color),
-                                                       (success, $success_color, $success_bg_color, $success_fg_color) {
+  @each $e_type in error, warning, success {
     &.#{$e_type} {
-      @include focus-ring($focus-state: '.focused', $offset: -1px, $fc: gtkalpha(currentColor, $focus_border_opacity), $transition: $row_transition);
+      color: var(--accent-color);
 
-      text {
-        > selection:focus-within { background-color: gtkalpha($e_color, .2); }
-
-        > cursor-handle > contents { background-color: currentColor; }
-      }
-
-      .dim-label, .subtitle {
+      .dimmed, .dim-label, .subtitle {
         opacity: 1;
-      }
-
-      .suggested-action {
-        background-color: $e_bg_color;
-        color: $e_fg_color;
       }
     }
   }
@@ -292,7 +307,7 @@ row.spin {
 
 row.combo {
   image.dropdown-arrow:disabled {
-    filter: opacity($disabled_opacity);
+    filter: Opacity(var(--disabled-opacity));
   }
 
   listview.inline {
@@ -314,7 +329,7 @@ row.combo {
       margin: 6px;
 
       + scrolledwindow {
-        @include undershoot(top, $popover_shade_color);
+        @include undershoot(top);
       }
     }
   }
@@ -337,23 +352,19 @@ row.combo {
 %boxed_list_row {
   @include focus-ring($offset: -1px, $transition: $row_transition);
 
-  .osd &:focus:focus-visible {
-    outline-color: $osd_focus_color;
-  }
-
-  border-bottom: 1px solid if($contrast == 'high', $border_color, $card_shade_color);
+  border-bottom: 1px solid if($contrast == 'high', $border_color, var(--card-shade-color));
 
   &:not(:selected).activatable {
     &:hover {
-      background-color: gtkalpha(currentColor, .03);
+      background-color: color-mix(in srgb, currentColor 3%, transparent);
     }
 
     &:active {
-      background-color: gtkalpha(currentColor, .08);
+      background-color: color-mix(in srgb, currentColor 8%, transparent);
     }
 
     &.has-open-popup {
-      background-color: gtkalpha(currentColor, .03);
+      background-color: color-mix(in srgb, currentColor 3%, transparent);
     }
   }
 }
@@ -370,7 +381,7 @@ row.expander {
   }
 
   list.nested {
-    background-color: gtkalpha($card_shade_color, .5);
+    background-color: color-mix(in srgb, var(--card-shade-color) 50%, transparent);
     color: inherit;
   }
 
@@ -381,7 +392,7 @@ row.expander {
   // AdwExpanderRow arrow rotation
 
   image.expander-row-arrow {
-    @extend .dim-label;
+    @extend .dimmed;
 
     transition: -gtk-icon-transform 200ms $ease-out-quad;
     @include margin-start(3px);
@@ -395,7 +406,7 @@ row.expander {
     }
 
     &:disabled {
-      filter: opacity($disabled_opacity);
+      filter: Opacity(var(--disabled-opacity));
     }
   }
 
@@ -404,7 +415,7 @@ row.expander {
     opacity: 1;
 
     &:not(:disabled) {
-      color: $accent_color;
+      color: var(--accent-color);
     }
   }
 
@@ -412,8 +423,75 @@ row.expander {
     color: inherit;
   }
 
-  &.property box > list > row {
+  &.property > box > list > row {
     @extend .property;
+  }
+
+  &.property.monospace > box > list > row > box.header > box.title > .subtitle {
+    font-family: var(--monospace-font-family);
+    font-size: var(--monospace-font-size);
+  }
+}
+
+/***************
+ * AdwButtonRow *
+ ***************/
+
+row.button {
+  > box {
+    margin-left: 12px;
+    margin-right: 12px;
+    border-spacing: 6px;
+    min-height: 40px;
+
+    > .icon:disabled {
+      filter: Opacity(var(--disabled-opacity));
+    }
+  }
+
+  .title {
+    @extend .heading;
+  }
+
+  &.suggested-action {
+    background-color: var(--accent-bg-color);
+    color: var(--accent-fg-color);
+    border-bottom: none;
+
+    @include focus-ring($outer: true, $offset: 1px, $transition: $row_transition);
+
+    &:not(.expander):not(:selected).activatable {
+      &:hover {
+        background-color: var(--accent-bg-color);
+        background-image: image(color-mix(in srgb, currentColor 10%, transparent));
+      }
+
+      &:active {
+        background-color: var(--accent-bg-color);
+        background-image: image(RGB(0 0 6 / 20%));
+      }
+
+      &.has-open-popup {
+        background-color: var(--accent-bg-color);
+        background-image: image(color-mix(in srgb, currentColor 10%, transparent));
+      }
+    }
+
+    &:disabled {
+      opacity: var(--disabled-opacity);
+
+      > box > .icon:disabled,
+      > box > label:disabled {
+        filter: none;
+      }
+    }
+  }
+
+  &.destructive-action {
+    color: var(--accent-color);
+    --accent-bg-color: var(--destructive-bg-color);
+    --accent-fg-color: var(--destructive-fg-color);
+    --accent-color: var(--destructive-color);
   }
 }
 
@@ -452,6 +530,72 @@ list.boxed-list {
         border-bottom-left-radius: $card_radius;
         border-bottom-right-radius: $card_radius;
         border-bottom-width: 0;
+      }
+    }
+  }
+}
+
+list.boxed-list-separate {
+  background: none;
+  color: var(--card-fg-color);
+
+  > row {
+    @extend %card;
+
+    &:selected {
+      background-color: var(--card-bg-color);
+      background-color: $view_selected_color;
+    }
+
+    border: none;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @include focus-ring($offset: -1px, $transition: $row_transition);
+
+    &:not(.expander) {
+      &:not(:selected).activatable {
+        &:hover {
+          background-color: var(--card-bg-color);
+          background-image: image(color-mix(in srgb, currentColor 3%, transparent));
+        }
+
+        &:active {
+          background-color: var(--card-bg-color);
+          background-image: image(color-mix(in srgb, currentColor 8%, transparent));
+        }
+
+        &.has-open-popup {
+          background-color: var(--card-bg-color);
+          background-image: image(color-mix(in srgb, currentColor 3%, transparent));
+        }
+      }
+    }
+
+    &.entry, &.spin {
+      &:not(:selected).activatable.focused:hover,
+      &:not(:selected).activatable.focused:active {
+        background-color: var(--card-bg-color);
+        background-image: none;
+      }
+    }
+
+    &.expander {
+      row.header {
+        @extend %boxed_list_row;
+        border-top-left-radius: $card_radius;
+        border-top-right-radius: $card_radius;
+      }
+
+      &:not(:checked) row.header,
+      &.expander:checked list.nested,
+      &.expander:checked list.nested > row:last-child {
+        border-bottom-left-radius: $card_radius;
+        border-bottom-right-radius: $card_radius;
+        border-bottom: none;
       }
     }
   }

@@ -11,6 +11,14 @@ spinner {
     opacity: 1;
     animation: spin 1s linear infinite;
 
-    &:disabled { opacity: $disabled_opacity; }
+    &:disabled { opacity: var(--disabled-opacity); }
   }
+}
+
+/**************
+ * AdwSpinner *
+ **************/
+
+image.spinner:disabled {
+  opacity: var(--disabled-opacity);
 }
