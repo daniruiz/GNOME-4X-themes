@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 $_dark_base_color: #272a34;
 
 // The main accent color and the matching text value
@@ -13,7 +21,7 @@ $_dark_base_color: #272a34;
 // Levelbars, entries, labels and infobars. These don't need text colors
 @define-color success_bg_color #{if($variant == 'dark', "@green_5", "@green_4")};
 @define-color success_fg_color white;
-@define-color success_color #{if($variant == 'dark', "@green_1", "#1b8553")};
+@define-color success_color #{if($variant == 'dark', "@green_1", #1b8553)};
 
 @define-color warning_bg_color #{if($variant == 'dark', #cd9309, "@yellow_5")};
 @define-color warning_fg_color #{transparentize(black, .2)};
@@ -24,55 +32,50 @@ $_dark_base_color: #272a34;
 @define-color error_color #{if($variant == 'dark', #ff7b63, "@red_4")};
 
 // Window
-@define-color window_bg_color #{if($variant == 'light', #fafafa, darken($_dark_base_color, 2%)))};
-@define-color window_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
+@define-color window_bg_color #{if($variant == 'light', #fafafb, darken($_dark_base_color, 2%)))};
+@define-color window_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
 
 // Views - e.g. text view or tree view
 @define-color view_bg_color #{if($variant == 'light', #ffffff, $_dark_base_color)};
-@define-color view_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
+@define-color view_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
 
 // Header bar, search bar, tab bar
-@define-color headerbar_bg_color #{if($variant == 'light', #ebebeb, darken($_dark_base_color, 6%))};
-@define-color headerbar_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
-@define-color headerbar_border_color #{if($variant == 'light', transparentize(black, .2), white)};
+@define-color headerbar_bg_color #{if($variant == 'light', #ebebed, darken($_dark_base_color, 6%))};
+@define-color headerbar_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
+@define-color headerbar_border_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
 @define-color headerbar_backdrop_color @view_bg_color;
-@define-color headerbar_shade_color #{if($variant == 'light', transparentize(black, .88), transparentize(black, .64))};
-@define-color headerbar_darker_shade_color #{if($variant == 'light', transparentize(black, .88), transparentize(black, .1))};
+@define-color headerbar_shade_color #{if($variant == 'light', rgba(0,0,6,0.12), rgba(0,0,6,0.36))};
+@define-color headerbar_darker_shade_color #{if($variant == 'light', rgba(0,0,6,0.12), rgba(0,0,6,0.9))};
 
 // Split pane views
-@define-color sidebar_bg_color #{if($variant == 'light', #ebebeb, darken($_dark_base_color, 6%))};
-@define-color sidebar_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
+@define-color sidebar_bg_color #{if($variant == 'light', #ebebed, darken($_dark_base_color, 6%))};
+@define-color sidebar_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
 @define-color sidebar_backdrop_color mix(@sidebar_bg_color, @window_bg_color, .5);
-@define-color sidebar_shade_color #{if($variant == 'light', transparentize(black, .93), transparentize(black, .64))};
-
-@define-color secondary_sidebar_bg_color mix(@sidebar_bg_color, @window_bg_color, .5);
-@define-color secondary_sidebar_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
-@define-color secondary_sidebar_backdrop_color mix(@secondary_sidebar_bg_color, @window_bg_color, .5);
-@define-color secondary_sidebar_shade_color #{if($variant == 'light', transparentize(black, .93), transparentize(black, .64))};
+@define-color sidebar_shade_color #{if($variant == 'light', rgba(0,0,6,0.07), rgba(0,0,6,0.25))};
+@define-color sidebar_border_color #{if($variant == 'light', rgba(0,0,6,0.07), rgba(0,0,6,0.36))};
 
 // Cards, boxed lists
-@define-color card_bg_color #{if($variant == 'light', #ffffff, transparentize(white, .95))};
-@define-color card_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
-@define-color card_shade_color #{if($variant == 'light', transparentize(black, .93), transparentize(black, .64))};
+@define-color card_bg_color #{if($variant == 'light', #ffffff, rgba(255,255,255,0.08))};
+@define-color card_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
+@define-color card_shade_color #{if($variant == 'light', rgba(0,0,6,0.07), rgba(0,0,6,0.36))};
 
 // Dialogs
-@define-color dialog_bg_color #{if($variant == 'light', #ffffff, lighten($_dark_base_color, 4%))};
-@define-color dialog_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
+@define-color dialog_bg_color #{if($variant == 'light', #fafafb, lighten($_dark_base_color, 4%))};
+@define-color dialog_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
 
 // Popovers
 @define-color popover_bg_color #{if($variant == 'light', #ffffff, lighten($_dark_base_color, 4%))};
-@define-color popover_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
-@define-color popover_shade_color #{if($variant == 'light', transparentize(black, .93), transparentize(black, .64))};
+@define-color popover_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
+@define-color popover_shade_color #{if($variant == 'light', rgba(0,0,6,0.07), rgba(0,0,6,0.25))};
 
 // Thumbnails
 @define-color thumbnail_bg_color #{if($variant == 'light', #ffffff, lighten($_dark_base_color, 4%))};
-@define-color thumbnail_fg_color #{if($variant == 'light', transparentize(black, .2), white)};
+@define-color thumbnail_fg_color #{if($variant == 'light', rgba(0,0,6,0.8), white)};
 
 // Miscellaneous
-@define-color shade_color #{if($variant == 'light', transparentize(black, .93), transparentize(black, .64))};
-@define-color scrollbar_outline_color #{if($variant == 'light', white, transparentize(black, .5))};
+@define-color shade_color #{if($variant == 'light', rgba(0,0,6,0.07), rgba(0,0,6,0.25))};
+@define-color scrollbar_outline_color #{if($variant == 'light', white, rgba(0,0,12,0.95))};
 
 // adw-gtk3 specific
 @define-color incognito_bg_color #{if($variant == 'light', #d7e3f0, #1c2438)};
 @define-color new_title_bg_color #{if($variant == 'light', #ffffff, #303030)}; // because it's only used in a few selected apps
-@define-color sidebar_border_color @sidebar_shade_color;

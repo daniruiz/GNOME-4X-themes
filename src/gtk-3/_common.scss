@@ -2,11 +2,13 @@ $ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 $asset_suffix: if($variant=='dark', '-dark', '');
 $backdrop_transition: 200ms ease-out;
 $button_transition: all 200ms $ease-out-quad;
-$button_radius: 6px;
-$menu_radius: 8px;
+$button_radius: 9px;
+$menu_radius: 9px;
 $window_radius: $button_radius + 6;
-$popover_radius: $window_radius;
-$card_radius: $button_radius + 6;
+$popover_radius: $menu_radius + 6;
+$card_radius: 12px;
+$dialog_radius: $button_radius + 6;
+$check_radius: 6px;
 $disabled_opacity: 0.5;
 
 // Optional compact sizes for buttons, headerbar and headerbar widgets
@@ -2267,88 +2269,40 @@ popover.background {
 // *************
 // * Notebooks *
 // *************
+window.background:not(.solid-csd):not(.csd) > notebook > header {
+  // For libreoffice. No idea why.
+  border: 0;
+  tab { margin: 0; }
+}
+
 notebook {
+  &, &.frame { border: none; }
+
   > header {
-    padding: 0px;
-    border-color: $border_color;
-    border-width: 0px;
+    padding: 6px;
+    border: none;
     background-color: $bg_color;
     box-shadow: none;
-
-    &.top { box-shadow: inset 0 -1px $border_color; }
-    &.bottom { box-shadow: inset 0 1px $border_color; }
-    &.left { box-shadow: inset -1px 0 $border_color; }
-    &.right { box-shadow: inset 1px 0 $border_color; }
+    border-color: transparent;
 
     tabs { margin: 0px; }
 
-    &.top {
+    &.top, &.bottom, &.left, &.right {
       border-bottom-style: solid;
       > tabs {
         margin-bottom: 0px;
         > tab {
-          &:not(.reorderable-page):hover {
-            box-shadow: inset 0 -4px $border_color;
-            &:not(:checked) {
-              background-color: $view_hover_color;
-            }
-          }
-          &:not(.reorderable-page):checked {
-            box-shadow: inset 0 -4px $selected_bg_color;
-          }
-        }
-      }
-    }
+          padding: 2px 8px;
+          border-radius: $button_radius;
+          transition: $button_transition;
+          background-color: transparent;
 
-    &.bottom {
-      border-top-style: solid;
-      > tabs {
-        margin-top: 0px;
-        > tab {
-          &:not(.reorderable-page):hover {
-            box-shadow: inset 0 4px $border_color;
-            &:not(:checked) {
-              background-color: $view_hover_color;
-            }
+          &:hover {
+            background-color: $hover_color;
           }
-          &:not(.reorderable-page):checked {
-            box-shadow: inset 0 4px $selected_bg_color;
-          }
-        }
-      }
-    }
-
-    &.left {
-      border-right-style: solid;
-      > tabs {
-        margin-right: 0px;
-        > tab {
-          &:not(.reorderable-page):hover {
-            box-shadow: inset -4px 0 $border_color;
-            &:not(:checked) {
-              background-color: $view_hover_color;
-            }
-          }
-          &:not(.reorderable-page):checked {
-            box-shadow: inset -4px 0 $selected_bg_color;
-          }
-        }
-      }
-    }
-
-    &.right {
-      border-left-style: solid;
-      > tabs {
-        margin-left: 0px;
-        > tab {
-          &:not(.reorderable-page):hover {
-            box-shadow: inset 4px 0 $border_color;
-            &:not(:checked) {
-              background-color: $view_hover_color;
-            }
-          }
-          &:not(.reorderable-page):checked {
-            box-shadow: inset 4px 0 $selected_bg_color;
+          &:checked {
+            background-color: $selected_color;
+            &:hover { background-color: $selected_hover_color; }
           }
         }
       }
@@ -2434,54 +2388,18 @@ notebook {
       border-color: transparent; //
 
       &.reorderable-page {
-        background-color: $tab_color;
-        box-shadow: inset -1px -1px $border_color;
-        border: none;
-      }
+        -gtk-outline-radius: $button_radius + 2;
+        outline-width: 2px;
+        outline-offset: -2px;
+        outline-style: solid;
+        outline-color: entry_focus_border();
 
-      &:hover {
-        color: $fg_color;
-
-        &.reorderable-page {
-          border-color: $border_color;
-          background-color: $tab_color_hover;
-          box-shadow: inset -1px -1px $border_color,
-                      inset 0 -4px $border_color;
-          transition: background-color 150ms ease-in-out;
-          &:backdrop { background-color: $tab_color_backdrop_hover; }
+        &:hover {
+          background-color: $hover_color;
         }
-      }
-
-      &:backdrop {
-        &.reorderable-page {
-          color: gtkmix($backdrop_fg_color, $backdrop_bg_color, 60%);
-          border-color: transparent;
-          background-color: $tab_color_backdrop;
-          box-shadow: inset -1px -1px $border_color;
-        }
-      }
-
-      &:checked {
-        color: $fg_color;
-        &.reorderable-page {
-          border-width: 0;
-          border-color: $border_color;
-          background-color: $tab_color_active;
-          box-shadow: inset -1px -1px $border_color,
-                      inset 0 -4px $selected_bg_color;
-          &:hover {
-            background-color: $tab_color_active_hover;
-          }
-        }
-      }
-
-      &:backdrop:checked {
-        &.reorderable-page {
-          color: $backdrop_fg_color;
-          border-color: $border_color;
-          box-shadow: inset -1px -1px $border_color,
-                      inset 0 -4px gtkalpha($selected_bg_color, .5);
-          background-color: $tab_color_backdrop_active;
+        &:checked {
+          background-color: $selected_color;
+          &:hover { background-color: $selected_hover_color; }
         }
       }
 
@@ -2534,7 +2452,7 @@ notebook {
           margin-right: 4px;
 
           &.reorderable-page {
-            border-style: none solid;
+            border-style: none;
             margin-left: 0px;
             margin-right: 0px;
           }
@@ -2574,7 +2492,8 @@ notebook {
   }
 
   > stack:not(:only-child) { // the :not(:only-child) is for "hidden" notebooks
-    background-color: $notebook_color;
+    //background-color: $notebook_color;
+    background-color: $bg_color;
 
     //&:backdrop { background-color: $backdrop_base_color; }
   }
@@ -2963,7 +2882,7 @@ radio {
 
 %check,
 check {
-  border-radius: $button_radius;
+  border-radius: $check_radius;
 
   &:checked { -gtk-icon-source: image(-gtk-recolor(url("assets/check-symbolic.svg")),
                                       -gtk-recolor(url("assets/check-symbolic.symbolic.png"))); }
@@ -3889,14 +3808,14 @@ messagedialog { // Message Dialog styling
     background: $dialog_bg_color;
     color: $dialog_fg_color;
     border-style: none;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+    border-top-left-radius: $dialog_radius;
+    border-top-right-radius: $dialog_radius;
   }
 
   &.csd { // rounded bottom border styling for csd version
     &.background {
-      border-bottom-left-radius: $window_radius;
-      border-bottom-right-radius: $window_radius;
+      border-bottom-left-radius: $dialog_radius;
+      border-bottom-right-radius: $dialog_radius;
       background-color: $dialog_bg_color;
       color: $dialog_fg_color;
     }
@@ -3942,13 +3861,13 @@ messagedialog { // Message Dialog styling
 
       &:first-child {
         border-left-style: none;
-        border-bottom-left-radius: $window_radius - 1;
-        -gtk-outline-bottom-left-radius: $window_radius - 1;
+        border-bottom-left-radius: $dialog_radius - 1;
+        -gtk-outline-bottom-left-radius: $dialog_radius - 1;
       }
 
       &:last-child {
-        border-bottom-right-radius: $window_radius - 1;
-        -gtk-outline-bottom-right-radius: $window_radius - 1;
+        border-bottom-right-radius: $dialog_radius - 1;
+        -gtk-outline-bottom-right-radius: $dialog_radius - 1;
       }
     }
   }
@@ -4796,4 +4715,3 @@ popover.emoji-completion contents row box {
 popover.emoji-completion .emoji:hover {
   background: $view_hover_color;
 }
-
