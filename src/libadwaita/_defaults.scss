@@ -124,10 +124,10 @@ $_dark_base_color: #272a34;
   }
 
   @if $variant == "light" {
-    --overview-bg-color: #f3f3f5;
+    --overview-bg-color: @secondary_sidebar_bg_color;
     --overview-fg-color: rgb(0 0 6 / 80%);
   } @else {
-    --overview-bg-color: #28282c;
+    --overview-bg-color: @secondary_sidebar_bg_color;
     --overview-fg-color: #ffffff;
   }
 }
