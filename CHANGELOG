@@ -1,3 +1,9 @@
+[20250603]
+ * Fix size of title buttons in libadwaita
+ * Fix missing colors in libadwaita
+ * Make gtk4 toast color black
+ * Regenerate all themes
+
 [20250402]
  * Update libadwaita colors
  * Update gtk-3 theme based on adw-gtk3
