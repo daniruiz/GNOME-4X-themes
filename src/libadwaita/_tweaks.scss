@@ -1,8 +1,9 @@
 windowcontrols,
 headerbar.default-decoration windowcontrols {
-  margin: 8px;
+  margin: 0 8px;
+  border-spacing: 4px;
 
-  > button {
+  > button.image-button {
     margin: 1px;
     padding: 0;
     min-height: 0;
@@ -16,7 +17,7 @@ headerbar.default-decoration windowcontrols {
       background-image: -gtk-scaled(url('assets/titlebutton.png'), url('assets/titlebutton@2.png'));
       background-repeat: no-repeat;
       background-position: center;
-      box-shadow: inset 0 0 0 1px transparentize(black, if($variant=='light', .8, .1));
+      box-shadow: inset 0 0 0 1px transparentize(black, .8);
       color: transparent;
       transition: all .2s;
     }
@@ -24,52 +25,81 @@ headerbar.default-decoration windowcontrols {
     &.close > image {
       background-color: #{"@accent_bg_color"};
       box-shadow: inset 0 0 0 transparent;
-
-      @if $variant == 'light' {
-        background-image: -gtk-scaled(url('assets/close-white.png'), url('assets/close-white@2.png'));
-      } @else {
-        background-image: -gtk-scaled(url('assets/close-black.png'), url('assets/close-black@2.png'));
-      }
+      background-image: -gtk-scaled(url('assets/close-white.png'), url('assets/close-white@2.png'));
     }
 
     &:hover {
       &, &.minimize, &.maximize, &.close {
         > image {
-          box-shadow: 0 0 0 1px transparentize(black, if($variant=='light', .9, 0));
+          box-shadow: 0 0 0 1px transparentize(black, .9);
         }
       }
 
       &.minimize > image {
-        background-image: -gtk-scaled(url('assets/minimize-#{$variant}.png'), url('assets/minimize-#{$variant}@2.png'));
+        background-image: -gtk-scaled(url('assets/minimize-light.png'), url('assets/minimize-light@2.png'));
       }
       &.maximize > image {
-        background-image: -gtk-scaled(url('assets/maximize-#{$variant}.png'), url('assets/maximize-#{$variant}@2.png'));
+        background-image: -gtk-scaled(url('assets/maximize-light.png'), url('assets/maximize-light@2.png'));
       }
       &.close > image {
-        @if $variant == 'light' {
-          background-image: -gtk-scaled(url('assets/close-black.png'), url('assets/close-black@2.png'));
-        } @else {
-          background-image: -gtk-scaled(url('assets/close-white.png'), url('assets/close-white@2.png'));
-        }
+        background-image: -gtk-scaled(url('assets/close-black.png'), url('assets/close-black@2.png'));
       }
     }
 
     &:backdrop,
     &:backdrop:hover {
       &.maximize image, &.minimize image, &.close image {
-        background-color: #{"mix(@headerbar_backdrop_color, black, #{if($variant=='light', .35, 1)})"};
+        background-color: #{"mix(@headerbar_backdrop_color, black, .35)"};
         background-image: -gtk-scaled(url('assets/titlebutton.png'), url('assets/titlebutton@2.png'));
-        box-shadow: inset 0 0 0 1px transparentize(black, if($variant=='light', .9, 0));
+        box-shadow: inset 0 0 0 1px transparentize(black, .9);
       }
     }
   }
 }
 
-window .sidebar-pane headerbar > windowhandle {
-  background-image: none;
-}
-
 headerbar.default-decoration {
   min-height: 38px;
   > windowhandle {  background-position: 0 -11px; }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  windowcontrols,
+  headerbar.default-decoration windowcontrols {
+    > button.image-button {
+      > image {
+        box-shadow: inset 0 0 0 1px transparentize(black, .2);
+      }
+
+      &.close > image {
+        background-image: -gtk-scaled(url('assets/close-black.png'), url('assets/close-black@2.png'));
+      }
+
+      &:hover {
+        &, &.minimize, &.maximize, &.close {
+          > image {
+            box-shadow: 0 0 0 1px black;
+          }
+        }
+        
+        &.minimize > image {
+          background-image: -gtk-scaled(url('assets/minimize-dark.png'), url('assets/minimize-dark@2.png'));
+        }
+        &.maximize > image {
+          background-image: -gtk-scaled(url('assets/maximize-dark.png'), url('assets/maximize-dark@2.png'));
+        }
+        &.close > image {
+          background-image: -gtk-scaled(url('assets/close-white.png'), url('assets/close-white@2.png'));
+        }
+      }
+
+      &:backdrop,
+      &:backdrop:hover {
+        &.maximize image, &.minimize image, &.close image {
+          background-color: black;
+          box-shadow: inset 0 0 0 1px black;
+        }
+      }
+    }
+  }
 }
