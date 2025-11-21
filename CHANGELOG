@@ -1,3 +1,10 @@
+[20251121]
+ * Update libadwaita theme for GNOME 49
+ * Remove gtk-4 themes as they are no longer needed for default window decoration
+ * Update build script
+ * Regenerate all themes
+ * Respect theme accent color
+
 [20250603]
  * Fix size of title buttons in libadwaita
  * Fix missing colors in libadwaita
