@@ -1,2 +1,5 @@
 @import 'colors';
 @import 'tweaks';
+
+@define-color accent_bg_color #{BG_COLOR};
+@define-color accent_fg_color #{FG_COLOR};
